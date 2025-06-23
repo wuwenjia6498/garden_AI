@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>田园AI梦：您的转型创业交互式规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthly Harmony (Warm neutrals with gentle green and blue accents) -->
+    <!-- Application Structure Plan: A thematic, single-page application with a fixed top navigation for smooth scrolling. The structure is designed for intuitive exploration, not mirroring the report's linear format. It progresses from high-level vision (Intro), to practical planning (Lifestyle Blueprint), skill acquisition (AI Skills), creative ideation (Creative Fusion), and finally to a concrete action plan (Roadmap). This task-oriented flow allows the user to engage with the information based on their immediate questions, e.g., "How much will it cost?" or "What can I create?". Interactive elements like a budget calculator, filterable idea cards, and step-by-step guides are used to transform passive reading into active planning. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: Table 1 (Rural Living Costs). Goal: Inform & Plan. Viz/Method: Interactive HTML form + Doughnut Chart (Chart.js). Interaction: User inputs values, chart updates dynamically to show budget allocation. Justification: Turns a static table into a personal planning tool.
+        2. Report Info: AI Market Growth Stats. Goal: Inform & Motivate. Viz/Method: Bar Chart (Chart.js). Interaction: Hover tooltips show specific values. Justification: Visualizes the market potential more impactfully than text.
+        3. Report Info: Tables 2 & 3 (Monetization & Product Ideas). Goal: Organize & Inspire. Viz/Method: Interactive CSS/JS Cards Grid. Interaction: Hover effects for engagement, clickable for potential detail pop-ups (structure is in place). Justification: A more visually appealing and scannable format than dense tables.
+        4. Report Info: Section V (Action Plan). Goal: Guide & Organize. Viz/Method: HTML/CSS vertical timeline/step-flow diagram. Interaction: Clicking a step could expand details. Justification: Breaks down complex strategy into manageable, sequential steps, making it less daunting.
+        5. Report Info: General Textual Content. Goal: Inform. Viz/Method: Accordions (HTML/JS). Interaction: Click to expand/collapse. Justification: Manages information density, keeps the UI clean, and allows users to drill down into topics of interest without overwhelming them.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; scroll-behavior: smooth; }
+        .bg-cream { background-color: #FDFBF5; }
+        .text-brown-dark { color: #5C3A21; }
+        .text-brown-light { color: #8C6D53; }
+        .bg-green-light { background-color: #E8F0E5; }
+        .accent-green { color: #558B6E; }
+        .border-green { border-color: #558B6E; }
+        .accent-bg-green { background-color: #558B6E; }
+        .accent-bg-green-soft { background-color: #DDE8E2; }
+        .accent-bg-blue-soft { background-color: #DDEBF0; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .nav-link { transition: all 0.3s; }
+        .nav-link.active, .nav-link:hover { color: #558B6E; transform: translateY(-2px); }
+        .card { transition: all 0.3s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .timeline-item::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: -12px; width: 2px; background-color: #DDE8E2; }
+        .timeline-item:last-child::before { display: none; }
+        .timeline-dot { position: absolute; left: 0; top: 12px; transform: translate(-50%, -50%); width: 24px; height: 24px; }
+    </style>
+</head>
+<body class="bg-cream text-brown-dark">
+
+    <!-- Header & Navigation -->
+    <header class="bg-cream/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold accent-green">田园AI梦</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#vision" class="nav-link font-medium text-brown-light">开启新篇</a>
+                <a href="#blueprint" class="nav-link font-medium text-brown-light">生活蓝图</a>
+                <a href="#skills" class="nav-link font-medium text-brown-light">技能解锁</a>
+                <a href="#fusion" class="nav-link font-medium text-brown-light">创意融合</a>
+                <a href="#roadmap" class="nav-link font-medium text-brown-light">行动策略</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-gray-300 rounded-md py-2 px-3 text-brown-dark focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="#vision">开启新篇</option>
+                    <option value="#blueprint">生活蓝图</option>
+                    <option value="#skills">技能解锁</option>
+                    <option value="#fusion">创意融合</option>
+                    <option value="#roadmap">行动策略</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Section 1: Vision -->
+        <section id="vision" class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4">开启人生新篇章</h2>
+            <p class="text-lg md:text-xl text-brown-light max-w-3xl mx-auto">
+                您好！欢迎来到您的个人转型规划空间。这份交互式报告专为您设计，旨在将您对乡村园艺和AI创意的热情，转化为一个清晰、可行、充满乐趣的未来蓝图。让我们一起探索，如何将两大兴趣完美结合，开启一段充满创造与治愈感的新生活。
+            </p>
+        </section>
+
+        <!-- Section 2: Lifestyle Blueprint -->
+        <section id="blueprint" class="bg-green-light py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">规划您的乡村生活蓝图</h2>
+                    <p class="text-brown-light max-w-3xl mx-auto">乡村生活意味着新的成本结构和生活方式。本部分将帮助您直观地评估财务可行性，并为您梳理乡村生活的现实考量，让您的理想生活更接地气。</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-16 items-start">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-6 text-center">乡村生活成本交互预算</h3>
+                        <div id="cost-form" class="space-y-4">
+                            <div>
+                                <label class="font-medium">房屋租金 (元/月)</label>
+                                <input type="number" id="rent" value="1500" class="w-full mt-1 p-2 border rounded-md">
+                            </div>
+                            <div>
+                                <label class="font-medium">水电网络 (元/月)</label>
+                                <input type="number" id="utilities" value="300" class="w-full mt-1 p-2 border rounded-md">
+                            </div>
+                            <div>
+                                <label class="font-medium">饮食开销 (元/月)</label>
+                                <input type="number" id="food" value="2000" class="w-full mt-1 p-2 border rounded-md">
+                            </div>
+                            <div>
+                                <label class="font-medium">交通通讯 (元/月)</label>
+                                <input type="number" id="transport" value="350" class="w-full mt-1 p-2 border rounded-md">
+                            </div>
+                             <div>
+                                <label class="font-medium">其他开销 (元/月)</label>
+                                <input type="number" id="other" value="500" class="w-full mt-1 p-2 border rounded-md">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-white p-4 rounded-xl shadow-lg">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                        <div class="mt-8">
+                            <h3 class="text-2xl font-bold mb-4">机遇与挑战</h3>
+                             <div class="space-y-3">
+                                <div class="accordion-item bg-white rounded-lg shadow-sm">
+                                    <button class="accordion-header w-full text-left p-4 font-medium flex justify-between items-center">
+                                        <span>基础设施与公共服务</span>
+                                        <span class="text-2xl transform transition-transform duration-300">+</span>
+                                    </button>
+                                    <div class="accordion-content px-4 pb-4 text-brown-light">
+                                        <p>乡村生活在宁静背后也伴随着现实挑战。尽管网络覆盖率高，但医疗、交通、污水处理等设施可能不如城市便捷。选择前需实地考察，并对可能产生的时间或额外成本有心理准备。</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item bg-white rounded-lg shadow-sm">
+                                    <button class="accordion-header w-full text-left p-4 font-medium flex justify-between items-center">
+                                        <span>社交融入与心理调适</span>
+                                        <span class="text-2xl transform transition-transform duration-300">+</span>
+                                    </button>
+                                    <div class="accordion-content px-4 pb-4 text-brown-light">
+                                        <p>乡村社区模式更紧密传统，融入需要时间和主动性。同时，要管理好对生活便利性的预期，充分准备，才能更好地享受慢节奏带来的治愈感。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: AI Skills -->
+        <section id="skills" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">解锁AI创意新技能</h2>
+                    <p class="text-brown-light max-w-3xl mx-auto">“技术小白”也能成为创作者。本部分将为您展示从零基础到实践的清晰学习路径、丰富的工具资源，并揭示广阔的市场前景，助您将创造的乐趣转化为个人核心技能。</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center mb-16">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">您的零基础学习路径</h3>
+                        <div class="space-y-4">
+                            <div class="card p-5 bg-white rounded-lg shadow-sm border-l-4 border-green">
+                                <h4 class="font-bold text-lg">系统课程</h4>
+                                <p class="text-brown-light mt-1">大学继续教育学院或网易云课堂等平台提供从浅入深的系统课程，注重实践，是入门的好选择。</p>
+                            </div>
+                            <div class="card p-5 bg-white rounded-lg shadow-sm border-l-4 border-green">
+                                <h4 class="font-bold text-lg">无代码/低代码平台</h4>
+                                <p class="text-brown-light mt-1">利用可视化工具，无需编程即可搭建应用和小程序，快速将您的创意变为现实。</p>
+                            </div>
+                            <div class="card p-5 bg-white rounded-lg shadow-sm border-l-4 border-green">
+                                <h4 class="font-bold text-lg">AI学习社区</h4>
+                                <p class="text-brown-light mt-1">在社区中交流、获取最新资讯和寻求帮助，与他人共同成长，保持学习动力。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-center">AI应用市场增长预测</h3>
+                        <div class="chart-container" style="height:320px; max-width:500px;">
+                             <canvas id="aiMarketChart"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-brown-light mt-2">全球市场规模预计以38.3%的年复合增长率持续增长。</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold mb-8 text-center">探索多元化变现模式</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> Abon. </div>
+                        <h4 class="text-xl font-bold mb-2">订阅服务</h4>
+                        <p class="text-brown-light">通过提供持续价值（如植物护理App），获取稳定现金流。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> 💡 </div>
+                        <h4 class="text-xl font-bold mb-2">定制化服务</h4>
+                        <p class="text-brown-light">利用AI工具为客户提供高附加值的个性化设计或内容服务。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> 🎨 </div>
+                        <h4 class="text-xl font-bold mb-2">数字产品销售</h4>
+                        <p class="text-brown-light">销售AI生成的数字艺术品、设计模板等，创作效率高。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> 🛍️ </div>
+                        <h4 class="text-xl font-bold mb-2">智能体商店</h4>
+                        <p class="text-brown-light">在平台发布定制AI智能体，借助平台流量获得收入分成。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> 🎓 </div>
+                        <h4 class="text-xl font-bold mb-2">课程/教程</h4>
+                        <p class="text-brown-light">将您的AI+园艺经验制作成课程，实现知识变现。</p>
+                    </div>
+                     <div class="card p-6 bg-white rounded-xl shadow-sm text-center">
+                        <div class="text-4xl mb-3"> 🎁 </div>
+                        <h4 class="text-xl font-bold mb-2">应用内购/广告</h4>
+                        <p class="text-brown-light">通过免费+增值模式降低用户门槛，实现多样化收入。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Creative Fusion -->
+        <section id="fusion" class="bg-green-light py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">当园艺遇见AI：探索无限可能</h2>
+                    <p class="text-brown-light max-w-3xl mx-auto">这是您创业旅程中最激动人心的部分。将园艺的治愈之美与AI的科技之力结合，可以创造出独一无二的产品和服务。发挥您的想象力，这里有几个起点。</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-green-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span class="text-3xl">📱</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">智能植物护理App</h4>
+                        <p class="text-brown-light">开发一款“植物医生”App，利用AI图像识别诊断病虫害，并提供个性化养护建议，解决园艺新手的痛点。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-green-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span class="text-3xl">🖼️</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">AI植物美学艺术</h4>
+                        <p class="text-brown-light">利用AI生成独特的植物主题数字艺术品或文创图案，融合自然与科技之美，在线销售或作为产品设计。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-green-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span class="text-3xl">🛋️</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">AI辅助园艺设计</h4>
+                        <p class="text-brown-light">提供定制化庭院设计服务。客户上传照片，您用AI工具快速生成可视化设计方案，让梦想花园一目了然。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-blue-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span class="text-3xl">🧘</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">AI园艺疗愈产品</h4>
+                        <p class="text-brown-light">开发结合智能监测的疗愈盆栽，或AI冥想园艺App，将植物的生长与正念结合，满足“情绪经济”需求。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-blue-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                           <span class="text-3xl">🧸</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">AI儿童园艺教育</h4>
+                        <p class="text-brown-light">发挥您儿童阅读行业的经验，创造AI互动故事书或游戏，讲述植物的生命故事，寓教于乐，培养孩子对自然的爱。</p>
+                    </div>
+                    <div class="card p-6 bg-white rounded-xl shadow-lg">
+                        <div class="accent-bg-blue-soft w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                            <span class="text-3xl">🤖</span>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">智能园艺硬件</h4>
+                        <p class="text-brown-light">构思并设计一款AI智能花盆，能自动浇水、施肥甚至播种，实现“懒人园艺”，吸引科技爱好者。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Action Roadmap -->
+        <section id="roadmap" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">您的专属创业路线图</h2>
+                    <p class="text-brown-light max-w-3xl mx-auto">成功的转型需要清晰的策略和灵活的执行。以下是一个循序渐进的实践路径，帮助您稳步将梦想变为现实。</p>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative">
+                        <div class="timeline-item relative pl-12 pb-12">
+                            <div class="timeline-dot bg-accent-bg-green flex items-center justify-center rounded-full ring-8 ring-cream">
+                                <span class="text-white font-bold">1</span>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">能力重塑与心态建设</h4>
+                            <p class="text-brown-light">盘点并转化您在儿童阅读行业的宝贵经验（如市场洞察、用户沟通），将其应用于新领域。同时，保持开放学习的心态，拥抱AI带来的机遇，并做好风险管理。</p>
+                        </div>
+                         <div class="timeline-item relative pl-12 pb-12">
+                            <div class="timeline-dot bg-accent-bg-green flex items-center justify-center rounded-full ring-8 ring-cream">
+                                <span class="text-white font-bold">2</span>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">商业模式验证与产品定位</h4>
+                            <p class="text-brown-light">将爱好转变为事业前，进行充分的市场调研。明确您的目标客户是谁？您的产品解决了什么独特问题？从小处着手，验证您的想法。</p>
+                        </div>
+                         <div class="timeline-item relative pl-12 pb-12">
+                            <div class="timeline-dot bg-accent-bg-green flex items-center justify-center rounded-full ring-8 ring-cream">
+                                <span class="text-white font-bold">3</span>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">个人品牌建设与营销</h4>
+                            <p class="text-brown-light">您的个人故事极具吸引力。通过社交媒体、博客等分享您的转型、园艺日常和AI探索之旅，构建鲜明的个人品牌，吸引早期用户和粉丝。</p>
+                        </div>
+                         <div class="timeline-item relative pl-12 pb-12">
+                            <div class="timeline-dot bg-accent-bg-green flex items-center justify-center rounded-full ring-8 ring-cream">
+                                <span class="text-white font-bold">4</span>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">启动与迭代：从小处开始</h4>
+                            <p class="text-brown-light">无需追求完美。从一个最小可行产品（MVP）开始，例如一项AI园艺设计服务或一个简单的工具，快速推向市场，收集真实反馈，然后不断迭代优化。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>转型创业是一段充满挑战但也充满机遇的旅程。</p>
+            <p class="mt-2 text-gray-400">勇敢迈出这一步，您的田园AI梦想，未来可期。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile navigation
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                window.location.hash = e.target.value;
+            });
+
+            // Active nav link highlighting on scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.onscroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 68) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            // Accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('span:last-child');
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        // Close other accordions
+                        document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                        document.querySelectorAll('.accordion-header span:last-child').forEach(i => i.style.transform = 'rotate(0deg)');
+                        
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(45deg)';
+                    }
+                });
+            });
+
+
+            // Cost Chart (Chart.js)
+            const costCtx = document.getElementById('costChart').getContext('2d');
+            let costChart = new Chart(costCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['房屋租金', '水电网络', '饮食开销', '交通通讯', '其他开销'],
+                    datasets: [{
+                        label: '生活成本占比',
+                        data: [1500, 300, 2000, 350, 500],
+                        backgroundColor: [
+                            '#87A96B',
+                            '#73A5C6',
+                            '#F9A620',
+                            '#B38B6D',
+                            '#C3B1E1'
+                        ],
+                        borderColor: '#FDFBF5',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: '每月生活成本预估占比',
+                            font: { size: 16, weight: 'bold' },
+                            color: '#5C3A21',
+                            padding: { top: 10, bottom: 20 }
+                        }
+                    }
+                }
+            });
+
+            const costForm = document.getElementById('cost-form');
+            costForm.addEventListener('input', updateCostChart);
+
+            function updateCostChart() {
+                const rent = parseFloat(document.getElementById('rent').value) || 0;
+                const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+                const food = parseFloat(document.getElementById('food').value) || 0;
+                const transport = parseFloat(document.getElementById('transport').value) || 0;
+                const other = parseFloat(document.getElementById('other').value) || 0;
+                costChart.data.datasets[0].data = [rent, utilities, food, transport, other];
+                costChart.update();
+            }
+
+            // AI Market Chart
+            const aiMarketCtx = document.getElementById('aiMarketChart').getContext('2d');
+            const aiMarketChart = new Chart(aiMarketCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['2023', '2032 (预计)'],
+                    datasets: [{
+                        label: '中国AI市场规模 (亿美元)',
+                        data: [0.29, 1500],
+                        backgroundColor: ['#73A5C6', '#558B6E'],
+                        borderColor: ['#73A5C6', '#558B6E'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '亿'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' 亿美元';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

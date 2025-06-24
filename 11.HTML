@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二期：讲清一个小故事</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--
+    Chosen Palette: "Playful & Energetic" - A vibrant and kid-friendly palette with soft blues, warm oranges, and clean whites to create an engaging and encouraging learning environment.
+
+    Application Structure Plan: The SPA is structured as a single, scrollable page to mimic a worksheet. It is divided into two main sections:
+    1.  **Part 1: Four-Element Sentence (四素句)** - This section revisits and expands on the previous lesson. It uses an image and guides the student through identifying the "who, what, where, and when" to form a complete descriptive sentence. This builds a foundational skill.
+    2.  **Part 2: Three-Paragraph Story (三段式)** - This section introduces the core concept of the lesson: structuring a narrative. It provides a new image, clear instructions for writing a beginning, middle, and end, and includes a "word bank" and an optional fill-in-the-blank template to support different learning levels.
+    This structure was chosen to provide a clear, step-by-step progression, moving from a single, complex sentence to a multi-paragraph story, which mirrors the pedagogical approach of scaffolding learning for young writers.
+
+    Visualization & Content Choices:
+    - **Image Analysis:** Uses images as the primary data source for students to analyze and interpret. (Source: "Mein Baumhaus" and "小狗钱钱和小黄鸟跳跳" images). Goal: Information gathering. Method: Static images with guided questions.
+    - **Instructional Tables:** "Four-Element Guide" and "Three-Paragraph Guide" are presented in clear, easy-to-read HTML tables. This organizes the information logically. Goal: Organize & Instruct. Method: HTML tables. Justification: Tables provide a structured and easily digestible format for rules and examples.
+    - **Word Bank:** Presented as a styled list within a card. Goal: Provide scaffolding. Method: HTML list. Justification: Offers vocabulary support without being intrusive, encouraging creative use of words.
+    - **Interactive Text Areas:** Replaces traditional paper lines with text areas for students to type their sentences and stories directly on the page. Goal: Practice & Application. Method: HTML `<textarea>` elements. Justification: Allows for digital completion and easy editing.
+
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .task-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .task-card:hover {
+            transform: translateY(-4px);
+        }
+        h1, h2, h3 {
+            font-weight: bold;
+        }
+        h1 {
+            color: #1e3a8a; /* Dark Blue */
+            font-size: 2.25rem;
+        }
+        h2 {
+            color: #1d4ed8; /* Medium Blue */
+            font-size: 1.875rem;
+            border-bottom: 2px solid #93c5fd;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        h3 {
+            color: #2563eb; /* Lighter Blue */
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+        .instruction-box {
+            background-color: #e0f2fe;
+            border-left: 5px solid #38bdf8;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .action-button {
+            background-color: #fb923c;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .action-button:hover {
+            background-color: #f97316;
+        }
+        textarea.composition-area {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #9ca3af;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            background-image:
+                linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+                linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+            background-size: 20px 40px;
+            resize: vertical;
+        }
+        .brand-logo {
+            font-weight: bold;
+            color: #6b7280;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 text-gray-800">
+
+<div class="container mx-auto p-4 md:p-8 max-w-4xl">
+    
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-blue-800 mb-2">第二期：讲清一个完整的故事</h1>
+        <p class="text-lg text-gray-600">看图写话练习单</p>
+        <div class="w-24 h-1 bg-orange-400 mx-auto mt-4 rounded"></div>
+    </header>
+
+    <!-- 练习一 -->
+    <section id="part1" class="task-card">
+        <h2 class="flex items-center space-x-2">
+            <span class="bg-blue-500 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold">1</span>
+            <span>从一句话开始：学会四要素</span>
+        </h2>
+
+        <div class="instruction-box">
+            <strong>学习目标：</strong> 在“谁在哪儿干什么”的基础上，加上“时间”这个新朋友，让你的句子更完整、更生动！
+        </div>
+
+        <div class="text-center my-6">
+            <img src="https://i.imgur.com/8Fk4C1S.png" alt="树屋里的动物们" class="mx-auto rounded-lg shadow-lg max-w-full md:max-w-md">
+            <p class="text-sm text-gray-500 mt-2">图：奥地利插画家 埃尔文·莫泽尔《晚安，小青蛙》</p>
+        </div>
+
+        <h3 class="text-xl font-semibold mb-4 text-blue-700">第一步：仔细观察，找出关键信息</h3>
+        <p class="mb-4">看看这幅画，你能找到故事的“四个要素”吗？把你想到的词语或短语写下来。</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-blue-100 p-4 rounded-lg">
+                <label for="when" class="block font-bold mb-1 text-blue-800">⏰ 时间 (When):</label>
+                <input type="text" id="when" class="w-full p-2 border border-blue-300 rounded" placeholder="例如：一个晴朗的早上...">
+            </div>
+            <div class="bg-green-100 p-4 rounded-lg">
+                <label for="who" class="block font-bold mb-1 text-green-800">👤 谁 (Who):</label>
+                <input type="text" id="who" class="w-full p-2 border border-green-300 rounded" placeholder="例如：小老鼠、猫头鹰...">
+            </div>
+            <div class="bg-yellow-100 p-4 rounded-lg">
+                <label for="where" class="block font-bold mb-1 text-yellow-800">📍 地点 (Where):</label>
+                <input type="text" id="where" class="w-full p-2 border border-yellow-300 rounded" placeholder="例如：在森林里的树屋...">
+            </div>
+            <div class="bg-red-100 p-4 rounded-lg">
+                <label for="what" class="block font-bold mb-1 text-red-800">🎈 事件 (What):</label>
+                <input type="text" id="what" class="w-full p-2 border border-red-300 rounded" placeholder="例如：一起玩耍、喝茶...">
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold mt-8 mb-4 text-blue-700">第二步：连词成句，大声说出来</h3>
+        <p class="mb-4">现在，试着把上面四个要素连起来，组成一个完整的句子。可以多试几次，直到你觉得通顺为止。</p>
+        <p class="p-4 bg-gray-100 rounded-lg text-gray-700"><strong>句式参考：</strong> [时间] + [谁] + [在哪里] + [做什么]。</p>
+        
+        <h3 class="text-xl font-semibold mt-8 mb-4 text-blue-700">第三步：写下你的句子</h3>
+        <p class="mb-2">把你刚才想到的最满意的句子，写在下面的方框里吧！</p>
+        <textarea id="sentence-output" class="composition-area h-24" placeholder="在这里写下你的句子..."></textarea>
+    </section>
+    
+    <!-- 练习二 -->
+    <section id="part2" class="task-card mt-8">
+        <h2 class="flex items-center space-x-2">
+            <span class="bg-orange-500 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold">2</span>
+            <span>升级挑战：写一个三段式小故事</span>
+        </h2>
+
+        <div class="instruction-box">
+            <strong>学习目标：</strong> 学会用“开头-经过-结尾”的三段式结构，把一幅图的内容写成一个完整的小故事。
+        </div>
+
+        <div class="text-center my-6">
+            <img src="https://i.imgur.com/Wp7D1eH.png" alt="小狗和小鸟一起看书" class="mx-auto rounded-lg shadow-lg max-w-full md:max-w-md">
+        </div>
+        
+        <h3 class="text-xl font-semibold mb-4 text-orange-700">第一步：构思故事大纲</h3>
+        <p class="mb-4">这个故事可以怎么开始？中间发生了什么？最后的结果是怎样的呢？想一想，然后写下来。</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label for="story-start" class="block font-bold mb-1 text-gray-700">开头（故事的开始）：</label>
+                <input type="text" id="story-start" class="w-full p-2 border border-gray-300 rounded" placeholder="例如：在一个阳光明媚的下午...">
+            </div>
+            <div>
+                <label for="story-middle" class="block font-bold mb-1 text-gray-700">经过（发生了什么）：</label>
+                <input type="text" id="story-middle" class="w-full p-2 border border-gray-300 rounded" placeholder="例如：小狗和小鸟一起看书，非常开心...">
+            </div>
+            <div>
+                <label for="story-end" class="block font-bold mb-1 text-gray-700">结尾（故事的结果）：</label>
+                <input type="text" id="story-end" class="w-full p-2 border border-gray-300 rounded" placeholder="例如：他们度过了一个愉快的下午...">
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold mt-8 mb-4 text-orange-700">第二步：词语宝库</h3>
+        <p class="mb-4">这里有一些词语可以帮助你把故事写得更生动，试试看能不能用上它们！</p>
+        <div class="bg-white border-l-4 border-yellow-400 p-4">
+            <p><strong>天气/时间：</strong> <span class="bg-yellow-100 rounded-full px-2 py-1 text-sm">阳光明媚</span> <span class="bg-yellow-100 rounded-full px-2 py-1 text-sm">晴朗的早上</span> <span class="bg-yellow-100 rounded-full px-2 py-1 text-sm">不知不觉</span></p>
+            <p class="mt-2"><strong>地点/场景：</strong> <span class="bg-green-100 rounded-full px-2 py-1 text-sm">公园里</span> <span class="bg-green-100 rounded-full px-2 py-1 text-sm">绿油油的草地</span> <span class="bg-green-100 rounded-full px-2 py-1 text-sm">大树下</span></p>
+            <p class="mt-2"><strong>动作/神态：</strong> <span class="bg-blue-100 rounded-full px-2 py-1 text-sm">依偎着</span> <span class="bg-blue-100 rounded-full px-2 py-1 text-sm">津津有味</span> <span class="bg-blue-100 rounded-full px-2 py-1 text-sm">看得入迷</span></p>
+            <p class="mt-2"><strong>心情/感受：</strong> <span class="bg-pink-100 rounded-full px-2 py-1 text-sm">开心极了</span> <span class="bg-pink-100 rounded-full px-2 py-1 text-sm">温暖</span> <span class="bg-pink-100 rounded-full px-2 py-1 text-sm">愉快</span></p>
+        </div>
+
+        <h3 class="text-xl font-semibold mt-8 mb-4 text-orange-700">第三步：开始写作吧！</h3>
+        <p class="mb-2">请在下面的方框里，写下你的三段式小故事。别忘了给你的故事取个好听的名字！</p>
+        
+        <input type="text" id="story-title" class="w-full p-2 border-b-2 border-gray-300 text-center text-2xl font-bold mb-4 focus:outline-none focus:border-orange-500" placeholder="我的故事标题">
+        
+        <textarea id="story-content" class="composition-area h-64" placeholder="在这里开始你的故事..."></textarea>
+    </section>
+
+    <footer class="text-center mt-8 text-sm text-gray-500">
+        <p>&copy; 2024 老约翰阅读。保留所有权利。</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
